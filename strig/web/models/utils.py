@@ -17,17 +17,21 @@ class AuditableNamedModel(NamedModel):
         _("Data de modificação"), 
         auto_now_add=True,
         )
+
+    deleted_date = models.DateTimeField(
+        _("Data de remoção"), 
+        null=True,
+        blank=True
+        )
     
-    created_by = models.OneToOneField(
-        User,
-        on_delete=models.DO_NOTHING,
+    created_by = models.ManyToManyField(
+        User,        
         related_name="%(app_label)s_%(class)s_created_related",
         related_query_name="%(app_label)s_%(class)ss",
     )
 
-    last_modified_by = models.OneToOneField(
-        User,
-        on_delete=models.DO_NOTHING,
+    last_modified_by = models.ManyToManyField(
+        User,        
         related_name="%(app_label)s_%(class)s_modified_related",
         related_query_name="%(app_label)s_%(class)ss",
     )

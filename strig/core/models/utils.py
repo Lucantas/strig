@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 
 class NamedModel(models.Model):
     name = models.CharField(_("Nome"), max_length=80)
-    description = models.TextField(_("Descrição"))
+    description = models.TextField(_("Descrição"), null=True, blank=True)
     
     class Meta:
         abstract = True

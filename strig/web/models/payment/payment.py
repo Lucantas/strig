@@ -20,8 +20,8 @@ class Payment(AuditableNamedModel):
     value = models.DecimalField(max_digits=9, decimal_places=2)
     payment_date = models.DateTimeField(_("Data do pagamento"))
 
-    tags = models.ManyToManyField(PaymentTag)
-    category = models.ForeignKey(PaymentCategory, on_delete=models.DO_NOTHING)
+    tag = models.ManyToManyField(PaymentTag, blank=True)
+    category = models.ManyToManyField(PaymentCategory, blank=True)
 
     def __str__(self):
         return "{0} - {1}".format(self.name, self.value)

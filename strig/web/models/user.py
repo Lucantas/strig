@@ -3,15 +3,15 @@ from django import forms
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.utils.translation import ugettext as _
 
 class UserManager(BaseUserManager):
     def create_user(self, email, date_of_birth, password=None):
         """
-        Creates and saves a User with the given email, date of
-        birth and password.
+        Cria e salva um usuário com o email, data de nascimento e senha informados
         """
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError('Usuários precisam ter um e-mail cadastrado')
 
         user = self.model(
             # email=self.normalize_email(email),
@@ -24,8 +24,7 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, date_of_birth, password=None):
         """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
+        Cria e salva um usuário super com o email, data de nascimento e senha informados
         """
         user = self.create_user(
             email,
@@ -37,31 +36,31 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser):
-    name = models.CharField(max_length=100)
-    creation_date = models.DateField(auto_now=True)
-    last_modified = models.DateField(auto_now_add=False, null=True)
-    date_of_birth = models.DateField(null=True)
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-    username = models.CharField(max_length=50, unique=True, null=True)
+    name = models.CharField(_("Nome"), max_length=100)
+    creation_date = models.DateField(_("Data de criação"), auto_now=True)
+    last_modified = models.DateField(_("Última modificação"), auto_now_add=False, null=True)
+    date_of_birth = models.DateField(_("Data de nascimento"), null=True)
+    is_active = models.BooleanField(_("Ativo"), default=True)
+    is_admin = models.BooleanField(_("Admin"), default=False)
+    email = models.EmailField(_("E-mail"), max_length=254, unique=True, null=True)
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
 
     objects = UserManager()
 
     def __str__(self):
-        return self.username
+        return "{0} <{1}>".format(self.name, self.email)
 
     def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
+        # TODO: "Does the user have a specific permission?"
         return True
 
     def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
+        # TODO: "Does the user have permissions to view the app `app_label`?"
         return True
 
     @property
     def is_staff(self):
-        "Is the user a member of staff?"
+        # TODO: "Is the user a member of staff?"
         return self.is_admin
     
